@@ -32,4 +32,19 @@ const findCustomer = async (req,resp) =>{
   }
 }
 
-module.exports = {createCustomer,findCustomer};
+const findCustomerById = async(req,resp) =>{
+try{
+    const {id} = req.params;
+    const customer = await customerModel.findById(id);
+    if(!customer){
+       return resp.status(400).json({message:'Customer not found'});
+    }
+    resp.status(200).json({message:'Customer find successfully',data:customer});
+
+}catch(error){
+    console.log(error);
+    resp.status(500).json({message:'Internal server error'});
+}
+}
+
+module.exports = {createCustomer,findCustomer,findCustomerById};
