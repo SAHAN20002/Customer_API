@@ -47,4 +47,20 @@ try{
 }
 }
 
-module.exports = {createCustomer,findCustomer,findCustomerById};
+const updatedCustomer = async(req,resp) =>{
+    try{
+     const {id} = req.params;
+     const {name,email,phone} = req.body;
+
+     const customerupdated = await customerModel.findByIdAndUpdate(id,{name,email,phone},{new:true});
+        if(!customerupdated){
+            return resp.status(400).json({message:'Customer not updated'});
+        }
+        resp.status(200).json({message:'Customer updated successfully',data:customerupdated});
+    }catch(error){
+        console.log(error);
+        resp.status(500).json({message:'Internal server error'});
+    }
+}
+
+module.exports = {createCustomer,findCustomer,findCustomerById,updatedCustomer};
