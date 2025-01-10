@@ -63,4 +63,18 @@ const updatedCustomer = async(req,resp) =>{
     }
 }
 
-module.exports = {createCustomer,findCustomer,findCustomerById,updatedCustomer};
+const deleteCustomer = async(req,resp) =>{
+    try{
+     const {id} = req.params;
+     const customerdeleted = await customerModel.findByIdAndDelete(id);
+     if(!customerdeleted){
+        return resp.status(400).json({message:'Customer not deleted'});
+     }
+        resp.status(200).json({message:'Customer deleted successfully',data:customerdeleted});
+    }catch(error){
+        console.log(error);
+        resp.status(500).json({message:'Internal server error'});
+    }
+}
+
+module.exports = {createCustomer,findCustomer,findCustomerById,updatedCustomer,deleteCustomer};
