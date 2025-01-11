@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const routerCustomer = require('./routers/customerRouters');   
 const routerProduct = require('./routers/productRouters');
+const routerOrder = require('./routers/orderRouters');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 
@@ -23,5 +24,6 @@ mongoose.connect(MONGO_URI).then(()=>{
 
 app.use('/customer',routerCustomer);
 app.use('/product',routerProduct);
+app.use('/order',routerOrder);
 
 app.listen(PORT,()=>console.log(`Server is running on port ${PORT}`));
