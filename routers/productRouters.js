@@ -7,3 +7,5 @@ ProductRouter.get('/find',productController.findProduct);
 ProductRouter.get('/find-by-id/:id',productController.findProductById);
 ProductRouter.put('/update-by-id/:id',productController.updatedProduct);
 ProductRouter.delete('/delete-by-id/:id',productController.deleteProduct);
+
+module.exports = ProductRouter;
