@@ -58,4 +58,19 @@ const findOrderById = async(req,resp) =>{
         resp.status(500).json({message:'Internal server error'});
     }
 };
-module.exports = { createOrder, findOrder, findOrderById };
+
+const deleteOrder = async (req,resp) =>{
+  try{
+   const {id} = req.params;
+   const orderdeleted = await orderModel.findByIdAndDelete(id);
+    if(!orderdeleted){
+      return resp.status(400).json({message:'Order not deleted'});
+    }
+    resp.status(200).json({message:'Order deleted successfully'});
+  }catch(error){
+    console.log(error);
+    resp.status(500).json({message:'Internal server error'});
+
+  }
+};
+module.exports = { createOrder, findOrder, findOrderById, deleteOrder };
