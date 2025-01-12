@@ -44,4 +44,18 @@ const findOrder = async (req,resp) =>{
     resp.status(500).json({message:'Internal server error'});
   }
 };
-module.exports = { createOrder, findOrder };
+
+const findOrderById = async(req,resp) =>{
+    try{
+      const {id} = req.params;
+      const order = await orderModel.findById(id);
+        if(!order){
+            return resp.status(404).json({message:'Order not found'});
+        }
+        resp.status(200).json({message:'Order fetched successfully',data:order});
+    }catch(error){
+        console.log(error);
+        resp.status(500).json({message:'Internal server error'});
+    }
+};
+module.exports = { createOrder, findOrder, findOrderById };
