@@ -31,4 +31,17 @@ const createOrder = async (req, resp) => {
   }
 };
 
-module.exports = { createOrder };
+const findOrder = async (req,resp) =>{
+  try{
+    const {searchText='',page=0,size=10} = req.query;
+    const search = searchText ?{name:{$regex:searchText,$options:'i'}}:{};
+    const orders = await orderModel.find(search).skip(page*size).limit(size);
+    const count = await orderModel.countDocuments(search);
+    resp.status(200).json({message:'Orders fetched successfully',datalist:orders,datacount:count});
+
+  }catch(error){
+    console.log(error);
+    resp.status(500).json({message:'Internal server error'});
+  }
+};
+module.exports = { createOrder, findOrder };
