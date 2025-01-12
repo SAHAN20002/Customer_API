@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const routerCustomer = require('./routers/customerRouters');   
 const routerProduct = require('./routers/productRouters');
-const routerOrder = require('./routers/orderRouters');
+const routerOrder = require('./routers/orderRouter');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 
