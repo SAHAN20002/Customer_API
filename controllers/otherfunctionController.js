@@ -34,7 +34,7 @@ const getOrderByDate = async(req,resp) =>{
      nextDate.setDate(nextDate.getDate()+1);
 
         const orders = await orderModel.find({date:{$gte:paserDate,$lt:nextDate}});
-        
+
         if(!orders){
             return resp.status(400).json({message:'Orders not found'});
         }
@@ -47,4 +47,33 @@ const getOrderByDate = async(req,resp) =>{
     }
 };
 
-module.exports = {getOrdersByCustomerId,getOrderByDate};
+const getTotalRevenueDate = async(req,resp) =>{
+try{
+ const {date} = req.params;
+ const paserDate = new Date(date);
+
+    if(isNaN(paserDate)){
+        return resp.status(400).json({message:'Invalid date'});
+    };
+
+    const nextDate = new Date(paserDate);
+    nextDate.setDate(nextDate.getDate()+1);
+
+    const revnue = await orderModel.aggregate([
+        {$match:{date:{$gte:paserDate,$lt:nextDate}}},
+        {$group:{_id: null, total: {$sum: '$totalAmount'}}}
+    ]);
+    if(!revnue){
+        return resp.status(400).json({message:'Revenue not found'});
+    }
+    resp.status(200).json({message:'Revenue fetched successfully',data:revnue});
+
+
+}catch(error){
+    console.log(error);
+    resp.status(500).json({message:'Internal server error'});
+}    
+};
+
+
+module.exports = {getOrdersByCustomerId,getOrderByDate,getTotalRevenueDate};
