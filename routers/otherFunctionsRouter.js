@@ -8,5 +8,6 @@ otherFunctionsRouter.get('/get-total-revenue-date/:date',otherFunctionsControlle
 otherFunctionsRouter.get('/most-ordered-product',otherFunctionsController.getMostFrequentProduct);
 otherFunctionsRouter.get('/get-out-of-stock-products',otherFunctionsController.getOutofStockProducts);
 otherFunctionsRouter.get('/get-latest-order',otherFunctionsController.getlatestOrder);
+otherFunctionsRouter.get('/count-total-customers',otherFunctionsController.countTotalCustomers);
 
 module.exports = otherFunctionsRouter;

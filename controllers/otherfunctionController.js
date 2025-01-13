@@ -114,7 +114,7 @@ const getOutofStockProducts = async(req,resp) =>{
 
 const getlatestOrder = async(req,resp) =>{
     try{
-        const order = await orderModel.find().sort({date:-1}).limit(1);
+        const order = await orderModel.find().sort({date:-1}).limit(5);
         if(!order){
             return resp.status(400).json({message:'Order not found'});
         }
@@ -127,4 +127,17 @@ const getlatestOrder = async(req,resp) =>{
     }
 };
 
-module.exports = {getOrdersByCustomerId,getOrderByDate,getTotalRevenueDate,getMostFrequentProduct,getOutofStockProducts,getlatestOrder};
+const countTotalCustomers = async(req,resp) =>{
+ try{
+
+    const totalcustomer = await customerModele.countDocuments();
+    resp.status(200).json({message:'Total customers fetched successfully',data:totalcustomer});
+
+ }catch(error){
+     console.log(error);
+     resp.status(500).json({message:'Internal server error'});
+
+ }
+};
+
+module.exports = {getOrdersByCustomerId,getOrderByDate,getTotalRevenueDate,getMostFrequentProduct,getOutofStockProducts,getlatestOrder,countTotalCustomers};
