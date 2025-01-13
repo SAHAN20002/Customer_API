@@ -75,5 +75,25 @@ try{
 }    
 };
 
+const getMostFrequentProduct = async(req,resp) =>{
+ try{
+    const products = await orderModel.aggregate([
+        {$unwind:'$products'},
+        {$group:{_id:'$products.productId',count:{$sum:'$products.quantity'}}},
+        {$sort:{count:-1}},
+        {$limit:1}
+    ]);
 
-module.exports = {getOrdersByCustomerId,getOrderByDate,getTotalRevenueDate};
+    if(!products){
+        return resp.status(400).json({message:'Products not found'});
+    }
+    const product = await productModel.findById(products[0]._id);
+    resp.status(200).json({message:'Product fetched successfully',data:product});
+    console.log('Fetched product:', product);
+ } catch(error){
+        console.log(error);
+        resp.status(500).json({message:'Internal server error'});
+ }
+};
+
+module.exports = {getOrdersByCustomerId,getOrderByDate,getTotalRevenueDate,getMostFrequentProduct};
