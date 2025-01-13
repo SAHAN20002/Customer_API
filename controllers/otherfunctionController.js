@@ -96,4 +96,20 @@ const getMostFrequentProduct = async(req,resp) =>{
  }
 };
 
-module.exports = {getOrdersByCustomerId,getOrderByDate,getTotalRevenueDate,getMostFrequentProduct};
+const getOutofStockProducts = async(req,resp) =>{
+    try{
+     const products = await productModel.find({quantity:0});
+        if(!products){
+            return resp.status(400).json({message:'Products not found'});
+        }
+        if(products.length===0){
+            return resp.status(400).json({message:'No out of stock products'});
+        }
+        resp.status(200).json({message:'Products fetched successfully',data:products});
+    }catch(error){
+        console.log(error);
+        resp.status(500).json({message:'Internal server error'});
+    }
+};
+
+module.exports = {getOrdersByCustomerId,getOrderByDate,getTotalRevenueDate,getMostFrequentProduct,getOutofStockProducts};
