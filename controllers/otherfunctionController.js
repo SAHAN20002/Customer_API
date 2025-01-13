@@ -21,4 +21,30 @@ const getOrdersByCustomerId = async(req,resp) =>{
  }
 };
 
-module.exports = {getOrdersByCustomerId};
+const getOrderByDate = async(req,resp) =>{
+    try{
+      const {date} = req.params;
+      const paserDate = new Date(date);
+
+      if(isNaN(paserDate)){
+        return resp.status(400).json({message:'Invalid date'});
+      };
+
+     const nextDate = new Date(paserDate);
+     nextDate.setDate(nextDate.getDate()+1);
+
+        const orders = await orderModel.find({date:{$gte:paserDate,$lt:nextDate}});
+        
+        if(!orders){
+            return resp.status(400).json({message:'Orders not found'});
+        }
+        resp.status(200).json({message:'Orders fetched successfully',data:orders});
+        console.log('Fetched orders:', orders);
+    }catch(error){
+        console.log(error);
+        resp.status(500).json({message:'Internal server error'});
+
+    }
+};
+
+module.exports = {getOrdersByCustomerId,getOrderByDate};
