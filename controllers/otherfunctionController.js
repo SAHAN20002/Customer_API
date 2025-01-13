@@ -140,4 +140,21 @@ const countTotalCustomers = async(req,resp) =>{
  }
 };
 
-module.exports = {getOrdersByCustomerId,getOrderByDate,getTotalRevenueDate,getMostFrequentProduct,getOutofStockProducts,getlatestOrder,countTotalCustomers};
+const customerdonthaveorder = async(req,resp) =>{
+    try{
+        const customers = await customerModele.aggregate([
+            {$lookup:{from:'orders',localField:'_id',foreignField:'customerID',as:'orders'}},
+            {$match:{orders:{$eq:[]}}}
+        ]);
+        if(!customers){
+            return resp.status(400).json({message:'Customers not found'});
+        }
+        resp.status(200).json({message:'Customers fetched successfully',data:customers});
+    }catch(error){
+        console.log(error);
+        resp.status(500).json({message:'Internal server error'});
+
+    }
+};
+
+module.exports = {getOrdersByCustomerId,getOrderByDate,getTotalRevenueDate,getMostFrequentProduct,getOutofStockProducts,getlatestOrder,countTotalCustomers,customerdonthaveorder};

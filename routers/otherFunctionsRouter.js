@@ -9,5 +9,6 @@ otherFunctionsRouter.get('/most-ordered-product',otherFunctionsController.getMos
 otherFunctionsRouter.get('/get-out-of-stock-products',otherFunctionsController.getOutofStockProducts);
 otherFunctionsRouter.get('/get-latest-order',otherFunctionsController.getlatestOrder);
 otherFunctionsRouter.get('/count-total-customers',otherFunctionsController.countTotalCustomers);
+otherFunctionsRouter.get('/customers-dont-have-order',otherFunctionsController.customerdonthaveorder);
 
 module.exports = otherFunctionsRouter;
